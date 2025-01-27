@@ -20,8 +20,8 @@ A modern, responsive weather application built with React that provides real-tim
 
 ## Technologies Used
 
-- React 18
-- CSS3
+- React 
+- CSS
 - WeatherAPI.com
 - Axios
 - React Router
