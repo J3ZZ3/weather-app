@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { 
-  UilTemperature, 
-  UilTear, 
-  UilWind
-} from '@iconscout/react-unicons';
+  FaTemperatureHigh, 
+  FaTint, 
+  FaWind 
+} from 'react-icons/fa';
 import './styles/Forecast.css';
 
 function Forecast({ forecast, units }) {
   const [view, setView] = useState('hourly');
   const [alert, setAlert] = useState(null);
+  
+  // Set the number of days to display
+  const daysToShow = 7; // Change this to 5 if you want to show 5 days
 
   const formatTime = (time) => {
     return new Date(time).toLocaleTimeString('en-US', {
@@ -68,7 +71,7 @@ function Forecast({ forecast, units }) {
                 />
                 <div className="forecast-details">
                   <div className="forecast-temp">
-                    <UilTemperature />
+                    <FaTemperatureHigh />
                     <span>
                       {Math.round(units === 'metric' ? hour.temp_c : hour.temp_f)}°
                       {units === 'metric' ? 'C' : 'F'}
@@ -76,11 +79,11 @@ function Forecast({ forecast, units }) {
                   </div>
                   <div className="forecast-info">
                     <div className="info-item">
-                      <UilTear />
+                      <FaTint />
                       <span>{hour.humidity}%</span>
                     </div>
                     <div className="info-item">
-                      <UilWind />
+                      <FaWind />
                       <span>
                         {Math.round(units === 'metric' ? hour.wind_kph : hour.wind_mph)}
                         {units === 'metric' ? ' km/h' : ' mph'}
@@ -93,7 +96,7 @@ function Forecast({ forecast, units }) {
           </div>
         ) : (
           <div className="weekly-forecast">
-            {forecast.forecastday.map((day, index) => (
+            {forecast.forecastday.slice(0, daysToShow).map((day, index) => (
               <div key={index} className="forecast-card">
                 <div className="forecast-date">
                   {formatDay(day.date)}
@@ -114,15 +117,21 @@ function Forecast({ forecast, units }) {
                   </div>
                   <div className="forecast-info">
                     <div className="info-item">
-                      <UilTear />
+                      <FaTint />
                       <span>{day.day.avghumidity}%</span>
                     </div>
                     <div className="info-item">
-                      <UilWind />
+                      <FaWind />
                       <span>
                         {Math.round(units === 'metric' ? day.day.maxwind_kph : day.day.maxwind_mph)}
                         {units === 'metric' ? ' km/h' : ' mph'}
                       </span>
+                    </div>
+                    <div className="info-item">
+                      <span>Sunrise: {day.astro.sunrise}</span>
+                    </div>
+                    <div className="info-item">
+                      <span>Sunset: {day.astro.sunset}</span>
                     </div>
                   </div>
                   <div className="condition-text">

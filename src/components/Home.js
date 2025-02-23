@@ -55,7 +55,7 @@ function Home({ units }) {
         setRecentLocations={setRecentLocations}
       />
       
-      {loading && <div className="loading">Loading weather data...</div>}
+      {loading && <div className="loading-spinner"></div>}
       {error && <div className="error">{error}</div>}
       
       {weather && !loading && (

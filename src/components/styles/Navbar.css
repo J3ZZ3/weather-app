@@ -1,7 +1,7 @@
 .navbar {
-    background-color: #2196f3;
+    background-color: #007BFF;
     padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   .nav-content {
@@ -15,7 +15,7 @@
   .nav-logo {
     color: white;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
   }
   
@@ -27,13 +27,13 @@
   .nav-link {
     color: white;
     text-decoration: none;
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 4px;
     transition: background-color 0.3s;
   }
   
   .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
   }
   
   @media (max-width: 480px) {

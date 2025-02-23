@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { UilMapMarker, UilGlobe, UilTimes, UilSearch } from '@iconscout/react-unicons';
+import { FaMapMarkerAlt, FaGlobeAmericas, FaTimes, FaSearch } from 'react-icons/fa';
 import './styles/SearchBar.css';
 
 function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
@@ -57,15 +57,18 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
   };
 
   const handleSearch = (query) => {
-    if (search) {
+    if (query) {
       setLoading(true);
-      axios.get(`API_URL?q=${search}`)
+      axios.get(`https://api.weatherapi.com/v1/forecast.json?key=5fd4dddfd9ee4e7e809145827252302&q=${query}&days=7&aqi=yes`)
         .then(response => {
-          onSearch(response.data);
+          onSearch(query);
           setError(null);
+          setSearch('');
+          setShowSuggestions(false);
         })
         .catch(err => {
-          setError("Error fetching data. Please try again.");
+          console.error("Error fetching data:", err.response ? err.response.data : err.message);
+          setError(err.response?.data?.error?.message || "Error fetching data. Please try again.");
         })
         .finally(() => setLoading(false));
     }
@@ -74,6 +77,11 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
   const handleSuggestionClick = (suggestion) => {
     const locationName = `${suggestion.name}, ${suggestion.country}`;
     handleSearch(locationName);
+    if (!recentLocations.includes(locationName)) {
+      const updatedLocations = [...recentLocations, locationName];
+      setRecentLocations(updatedLocations);
+      localStorage.setItem('recentLocations', JSON.stringify(updatedLocations));
+    }
   };
 
   return (
@@ -101,7 +109,7 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
                   className="suggestion-item"
                 >
                   <div className="suggestion-info">
-                    <UilMapMarker className="suggestion-icon" />
+                    <FaMapMarkerAlt className="suggestion-icon" />
                     <div className="suggestion-text">
                       <span className="suggestion-name">{suggestion.name}</span>
                       <span className="suggestion-region">
@@ -115,7 +123,7 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
           )}
         </div>
         <button type="submit" className="search-button">
-          <UilSearch />
+          <FaSearch />
           <span>Search</span>
         </button>
       </form>
@@ -123,7 +131,7 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
       {recentLocations.length > 0 && (
         <div className="recent-locations">
           <h3>
-            <UilMapMarker />
+            <FaMapMarkerAlt />
             Recent Locations
           </h3>
           <div className="location-buttons">
@@ -137,7 +145,7 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
                   onClick={() => handleSearch(location)}
                   className="location-button"
                 >
-                  <UilGlobe />
+                  <FaGlobeAmericas />
                   <span>{location}</span>
                 </button>
                 <button
@@ -150,7 +158,7 @@ function SearchBar({ onSearch, recentLocations, setRecentLocations }) {
                   className="remove-location-button"
                   title="Remove location"
                 >
-                  <UilTimes />
+                  <FaTimes />
                 </button>
               </div>
             ))}
